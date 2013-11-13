@@ -84,4 +84,7 @@ Vagrant.configure("2") do |config|
   # configure environment via script
   # config.vm.provision :shell, :path => "shell.sh"
 
+  # setup synced folder: "local host machine path", "path on guest vm"
+  config.vm.synced_folder "/host", "/guest"
+  
 end
