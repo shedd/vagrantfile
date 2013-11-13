@@ -81,4 +81,7 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "vim"
   end
 
+  # configure environment via script
+  # config.vm.provision :shell, :path => "shell.sh"
+
 end
