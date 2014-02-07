@@ -1,0 +1,7 @@
+- name: Install "coffee-script" node.js package globally.
+  npm: name=coffee-script global=yes
+  sudo: yes
+
+- name: Install "bower" node.js package globally.
+  npm: name=bower global=yes
+  sudo: yes

@@ -1,0 +1,13 @@
+---
+- hosts: all
+
+  tasks:
+    - include: ./tasks/essentials.yml
+    - include: ./tasks/ruby.yml
+      vars:
+        ruby_version: 2.1.0
+    - include: ./tasks/python.yml
+    - include: ./tasks/nodejs.yml
+    - include: ./tasks/mongo.yml
+    - include: ./tasks/dev_dependencies.yml
+    - include: ./tasks/setup_app.yml
