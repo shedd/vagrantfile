@@ -2,8 +2,24 @@
   apt: pkg=curl state=present
   sudo: yes
 
+- name: Configure no-ri no-rdoc
+  lineinfile:
+    dest=/etc/gemrc
+    line="{{item}}"
+    state=present
+    insertafter=EOF
+    create=True
+  with_items:
+    - "install: --no-rdoc --no-ri"
+    - "update:  --no-rdoc --no-ri"
+  sudo: yes
+
+- name: set permissions on gemrc
+  command: chown -R vagrant:vagrant /etc/gemrc
+  sudo: yes
+
 - name: check rvm ruby version installed
-  shell: /home/vagrant/.rvm/bin/rvm current
+  shell: /usr/local/rvm/bin/rvm current
   register: ruby_exists
   ignore_errors: yes
 
@@ -16,3 +32,8 @@
   command: chown -R vagrant:vagrant /usr/local/rvm/gems/
   sudo: yes
   when: ruby_exists.stdout != 'ruby-{{ruby_version}}'
+
+#To Fix: https://github.com/travis-ci/travis-ci/issues/1806
+- name: make sure we have Bundler 1.5.1+ installed
+  command: /usr/local/rvm/rubies/ruby-{{ruby_version}}/bin/gem install bundler -v '= 1.5.1'
+  sudo: yes
