@@ -9,5 +9,10 @@
     - include: ./tasks/python.yml
     - include: ./tasks/nodejs.yml
     - include: ./tasks/mongo.yml
+    - include: ./tasks/postgresql.yml
+      vars:
+        dbname: dbname
+        dbuser: username
+        dbpassword: password
     - include: ./tasks/dev_dependencies.yml
     - include: ./tasks/setup_app.yml
