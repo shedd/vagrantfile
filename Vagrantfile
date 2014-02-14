@@ -40,13 +40,3 @@ Vagrant.configure("2") do |config|
     ansible.playbook = "./ansible/playbook.yml"
   end
 end
-
-
-
-
-
-
-  
-
-  
-end
