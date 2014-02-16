@@ -37,3 +37,4 @@
 - name: make sure we have Bundler 1.5.1+ installed
   command: /usr/local/rvm/rubies/ruby-{{ruby_version}}/bin/gem install bundler -v '= 1.5.1'
   sudo: yes
+  when: ruby_exists.stdout != 'ruby-{{ruby_version}}'
