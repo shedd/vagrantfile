@@ -16,3 +16,6 @@
         dbpassword: password
     - include: ./tasks/dev_dependencies.yml
     - include: ./tasks/setup_app.yml
+
+  handlers:
+    - include: ./handlers/postgresql.yml

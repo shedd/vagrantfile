@@ -31,3 +31,29 @@
   postgresql_user: name={{dbuser}} role_attr_flags=NOSUPERUSER,NOCREATEDB
   sudo: yes
   sudo_user: postgres
+
+- name: Ensure PostgreSQL is listening on all localhost
+  lineinfile: dest=/etc/postgresql/9.1/main/postgresql.conf
+              regexp='^#?listen_addresses\s*='
+              line="listen_addresses = '*'"
+              state=present
+  notify: restart postgresql
+  sudo: yes
+  sudo_user: postgres
+
+- lineinfile: dest=/etc/postgresql/9.1/main/pg_hba.conf
+              regexp='host\s+all\s+all\s+127.0.0.1/32\s+md5'
+              line='host all all 127.0.0.1/32 md5'
+              insertbefore=BOF
+  notify: restart postgresql
+  sudo: yes
+  sudo_user: postgres
+
+- name: Ensure PostgreSQL is listening to Vagrant
+  lineinfile: dest=/etc/postgresql/9.1/main/pg_hba.conf
+              regexp='host\s+all\s+all\s+127.0.0.1/32\s+md5'
+              line='host all all 10.0.2.2/32 md5'
+              insertbefore=BOF
+  notify: restart postgresql
+  sudo: yes
+  sudo_user: postgres

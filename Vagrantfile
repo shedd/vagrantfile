@@ -25,6 +25,7 @@ Vagrant.configure("2") do |config|
 
   # Create a forwarded port mapping which allows access to a specific port
   config.vm.network :forwarded_port, guest: 3000, host: 3000
+  config.vm.network :forwarded_port, guest: 5432, host: 5432 # forward postgres
 
   # headless?  uncomment this to have the VM's window available
   config.vm.provider :virtualbox do |vb|
