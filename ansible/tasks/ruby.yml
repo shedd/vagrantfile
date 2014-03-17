@@ -23,9 +23,21 @@
   register: ruby_exists
   ignore_errors: yes
 
-- name: install RVM and required version of ruby
+- name: install RVM
   sudo: yes
-  shell: \curl -sSL https://get.rvm.io | bash -s stable --ruby={{ruby_version}}
+  shell: \curl -sSL https://get.rvm.io | bash -s stable
+  when: ruby_exists.stdout != 'ruby-{{ruby_version}}'
+  register: command_result
+  failed_when: "'ERROR' in command_result.stderr"
+
+- name: add vagrant user to rvm group
+  action: user name=vagrant groups=rvm append=true
+  sudo: yes
+  when: ruby_exists.stdout != 'ruby-{{ruby_version}}'
+
+- name: install required version of ruby
+  sudo: yes
+  shell: /usr/local/rvm/bin/rvm install {{ruby_version}}
   when: ruby_exists.stdout != 'ruby-{{ruby_version}}'
 
 - name: fix permissions to allow for gem installation
