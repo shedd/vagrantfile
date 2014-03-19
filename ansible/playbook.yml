@@ -14,6 +14,9 @@
         dbname: dbname
         dbuser: username
         dbpassword: password
+    - include: ./tasks/mysql.yml
+      vars:
+        root_db_password: password
     - include: ./tasks/dev_dependencies.yml
     - include: ./tasks/setup_app.yml
 

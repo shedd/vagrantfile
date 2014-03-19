@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   config.vm.network :forwarded_port, guest: 3000, host: 3000
   config.vm.network :forwarded_port, guest: 5432, host: 5432 # forward postgres
+  config.vm.network :forwarded_port, guest: 3306, host: 3306 # forward mysql
 
   # headless?  uncomment this to have the VM's window available
   config.vm.provider :virtualbox do |vb|
@@ -39,5 +40,6 @@ Vagrant.configure("2") do |config|
   # provisioning with ansible
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "./ansible/playbook.yml"
+    #ansible.verbose = "vvvv"
   end
 end
