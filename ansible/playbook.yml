@@ -5,7 +5,8 @@
     - include: ./tasks/essentials.yml
     - include: ./tasks/ruby.yml
       vars:
-        ruby_version: 2.1.0
+        ruby_version: 2.1.1
+        bundler_version: 1.6.1
     - include: ./tasks/python.yml
     - include: ./tasks/nodejs.yml
     - include: ./tasks/mongo.yml
@@ -18,7 +19,11 @@
       vars:
         root_db_password: password
     - include: ./tasks/dev_dependencies.yml
+    - include: ./tasks/customize_environment.yml
     - include: ./tasks/setup_app.yml
+    - include: ./tasks/phantomjs.yml
+      vars:
+        url: http://code.google.com/p/phantomjs/downloads/list?can=1
 
   handlers:
     - include: ./handlers/postgresql.yml

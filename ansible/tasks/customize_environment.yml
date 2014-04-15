@@ -1,0 +1,2 @@
+- name: Automatically cd to vagrant directory
+  lineinfile: line="cd /vagrant" dest=/home/vagrant/.bashrc state=present

@@ -46,7 +46,7 @@
   when: ruby_exists.stdout != 'ruby-{{ruby_version}}'
 
 #To Fix: https://github.com/travis-ci/travis-ci/issues/1806
-- name: make sure we have Bundler 1.5.1+ installed
-  command: /usr/local/rvm/rubies/ruby-{{ruby_version}}/bin/gem install bundler -v '= 1.5.1'
+- name: make sure we have a recent version of Bundler installed
+  command: /usr/local/rvm/rubies/ruby-{{ruby_version}}/bin/gem install bundler -v '= {{bundler_version}}'
   sudo: yes
   when: ruby_exists.stdout != 'ruby-{{ruby_version}}'

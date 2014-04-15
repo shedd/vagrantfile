@@ -5,3 +5,24 @@
 - name: Install "bower" node.js package globally.
   npm: name=bower global=yes
   sudo: yes
+
+- name: Get Heroku Toolbelt install script for linux
+  get_url: url=https://toolbelt.heroku.com/install-ubuntu.sh dest=/vagrant/tmp/heroku-toolbelt-install.sh mode=0744
+
+- name: Install heroku toolbelt package globally
+  command: /vagrant/tmp/heroku-toolbelt-install.sh
+
+- name: ensure Passenger dependencies are installed to build from source
+  apt: pkg={{item}} state=present
+  sudo: yes
+  with_items:
+      - libcurl4-openssl-dev
+      - libpcre3-dev
+
+- name: install packages for Capybara webkit testing
+  apt: pkg={{item}} state=present
+  sudo: yes
+  with_items:
+      - libicu48
+      - libqtwebkit-dev
+      - xvfb
