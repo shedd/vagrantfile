@@ -10,6 +10,7 @@
     - include: ./tasks/python.yml
     - include: ./tasks/nodejs.yml
     - include: ./tasks/mongo.yml
+    - include: ./tasks/redis.yml
     - include: ./tasks/postgresql.yml
       vars:
         dbname: dbname

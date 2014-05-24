@@ -1,0 +1,25 @@
+---
+- name: install redis-server build dependencies
+  apt: pkg={{item}} state=present
+  sudo: yes
+  with_items:
+      - python-software-properties
+      - python
+
+- name: add apt-get repository for latest redis
+  shell: add-apt-repository -y ppa:rwky/redis
+  sudo: yes
+
+- name: ensure apt-get is up to date with added redis dependencies
+  apt: update_cache=yes
+  sudo: yes
+
+- name: install redis-server
+  apt: pkg=redis-server state=present
+  sudo: yes
+
+- name: ensure redis server is running
+  sudo: yes
+  action: service name=redis-server state=started
+
+
