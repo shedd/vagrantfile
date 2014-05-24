@@ -13,6 +13,10 @@
 
 - name: create development/test databases
   postgresql_db: name={{item}}
+               encoding="UTF-8"
+               template="template0"
+               lc_collate='en_US.utf8'
+               lc_ctype='en_US.utf8'
   sudo: yes
   sudo_user: postgres
   with_items:
