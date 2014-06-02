@@ -18,6 +18,9 @@ Fire up the Vagrant VM:
 
 Ensure Ansible has run successfully and provisioned the boxes.  If not, try again using `vagrant provision`
 
+## Debugging
+
+If you're having trouble with Vagrant, try enabling Vagrant's logging to see what's going on: `export VAGRANT_LOG=info`
 
 ## Links
 
