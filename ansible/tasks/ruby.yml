@@ -19,9 +19,8 @@
   sudo: yes
 
 - name: check rvm ruby version installed
-  shell: /usr/local/rvm/bin/rvm current
+  shell: (test -f /usr/local/rvm/bin/rvm && /usr/local/rvm/bin/rvm current) || echo "system"
   register: ruby_exists
-  ignore_errors: yes
 
 - name: install RVM
   sudo: yes
@@ -43,7 +42,6 @@
 - name: fix permissions to allow for gem installation
   command: chown -R vagrant:vagrant /usr/local/rvm/gems/
   sudo: yes
-  when: ruby_exists.stdout != 'ruby-{{ruby_version}}'
 
 #To Fix: https://github.com/travis-ci/travis-ci/issues/1806
 - name: make sure we have a recent version of Bundler installed
