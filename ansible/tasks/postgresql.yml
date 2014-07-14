@@ -1,9 +1,19 @@
+- name: add PostgreSQL repository
+  lineinfile: dest=/etc/apt/sources.list.d/pgdg.list
+              line='deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main'
+              create=yes
+  sudo: yes
+
+- name: add PostgreSQL repo key
+  shell: wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
+  sudo: yes
+
 - name: ensure PostgreSQL and dependencies are installed
   apt: pkg={{item}} state=present
   sudo: yes
   with_items:
-      - postgresql
-      - postgresql-contrib
+      - postgresql-9.3
+      - postgresql-contrib-9.3
       - libpq-dev
       - python-psycopg2
 
@@ -13,10 +23,10 @@
 
 - name: create development/test databases
   postgresql_db: name={{item}}
-               encoding="UTF-8"
-               template="template0"
-               lc_collate='en_US.utf8'
-               lc_ctype='en_US.utf8'
+                 encoding="UTF-8"
+                 template="template0"
+                 lc_collate='en_US.utf8'
+                 lc_ctype='en_US.utf8'
   sudo: yes
   sudo_user: postgres
   with_items:
@@ -35,9 +45,25 @@
   postgresql_user: name={{dbuser}} role_attr_flags=NOSUPERUSER,NOCREATEDB
   sudo: yes
   sudo_user: postgres
+  when: dbuser_should_be_superuser != true
+
+- name: ensure user is superuser
+  postgresql_user: name={{dbuser}} role_attr_flags=CREATEDB,SUPERUSER
+  sudo: yes
+  sudo_user: postgres
+  when: dbuser_should_be_superuser == true
+
+- name: Ensure PostgreSQL is listening on the right port
+  lineinfile: dest=/etc/postgresql/9.3/main/postgresql.conf
+              regexp='^#?port\s*='
+              line="port = 5440"
+              state=present
+  notify: restart postgresql
+  sudo: yes
+  sudo_user: postgres
 
 - name: Ensure PostgreSQL is listening on all localhost
-  lineinfile: dest=/etc/postgresql/9.1/main/postgresql.conf
+  lineinfile: dest=/etc/postgresql/9.3/main/postgresql.conf
               regexp='^#?listen_addresses\s*='
               line="listen_addresses = '*'"
               state=present
@@ -46,7 +72,7 @@
   sudo_user: postgres
 
 - name: Ensure PostgreSQL is listening to Vagrant
-  lineinfile: dest=/etc/postgresql/9.1/main/pg_hba.conf
+  lineinfile: dest=/etc/postgresql/9.3/main/pg_hba.conf
               regexp='host\s+all\s+all\s+127.0.0.1/32\s+md5'
               line='host all all 0.0.0.0/0 trust'
               insertbefore=BOF
